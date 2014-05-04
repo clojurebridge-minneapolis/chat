@@ -7,7 +7,14 @@
 
 (defn iam [params]
   (page/html5
-     [:div "You are " (:name params) "!"]))
+     [:div "You are " (:name params) "!"
+      [:ul
+       [:li "Your name is "
+        (if (odd? (count (:name params)))
+          "Odd"
+          "Even")]
+        (if (> (count (:name params)) 7)
+            [:li "You should consider a nickname."])]]))
 
 ; this is a function
 (defn who []
