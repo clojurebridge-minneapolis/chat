@@ -10,6 +10,7 @@
      (let [name (:name params)]
      [:div "You are " name "!"
       [:ul
+       [:li (str params)]
        [:li "Your name is "
         (if (odd? (count name))
           "Odd"
@@ -24,7 +25,7 @@
      (form/form-to [:post "/iam"]
                    [:label "Who are you?"]
                    (form/text-field "name")
-                   (form/submit-button "Submit"))))
+                   (form/submit-button {:name "submit"} "Submit"))))
 
 (defroutes app-routes
   (GET "/" [] (who))
