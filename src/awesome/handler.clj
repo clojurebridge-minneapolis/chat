@@ -1,9 +1,11 @@
 (ns awesome.handler
-  (:use compojure.core)
+  (:use [compojure.core]
+         [hiccup.bootstrap.middleware])
   (:require [compojure.handler :as handler]
             [compojure.route :as route]
             [hiccup.page :as page]
-            [hiccup.form :as form]))
+            [hiccup.form :as form]
+            [hiccup.bootstrap.page :as boot]))
 
 (def messages (atom []))
 
@@ -11,12 +13,16 @@
   (when-not (empty? msg)
     (swap! messages conj [name msg]))
   (page/html5
-   (map (fn [message] [:div [:strong (first message)] " " (second message)]) @messages)
-   ;(str @messages)
-   (form/form-to
-    [:post "/"]
-    [:div "Name:" (form/text-field "name" name) " Message:" (form/text-field "msg")]
-    (form/submit-button "Submit"))))
+   [:head
+    [:title "Chat"]
+    (boot/include-bootstrap)]
+   [:body
+     [:h1 "Chat"]
+     (map (fn [message] [:div [:strong (first message)] " " (second message)]) @messages)
+     (form/form-to
+      [:post "/"]
+      [:div "Name:" (form/text-field "name" name) " Message:" (form/text-field "msg")]
+      (form/submit-button "Submit"))]))
 
 (defn iam [params]
   (page/html5
@@ -29,8 +35,7 @@
           "Odd"
           "Even")]
         (when (> (count name) 7)
-            [:li "You should consider a nickname."])]]
-       )))
+            [:li "You should consider a nickname."])]])))
 
 ; this is a function
 (defn who []
@@ -50,4 +55,4 @@
   (route/not-found "Not Found"))
 
 (def app
-  (handler/site app-routes))
+  (handler/site (wrap-bootstrap-resources app-routes)))
