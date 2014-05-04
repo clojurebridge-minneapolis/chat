@@ -2,11 +2,26 @@
   (:use compojure.core)
   (:require [compojure.handler :as handler]
             [compojure.route :as route]
-            [hiccup.page :as page]))
+            [hiccup.page :as page]
+            [hiccup.form :as form]))
+
+(defn iam [params]
+  (page/html5
+     [:div "You are " (:name params) "!"]))
+
+; this is a function
+(defn who []
+  (page/html5
+     (form/form-to [:post "/iam"]
+                   [:label "Who are you?"]
+                   (form/text-field "name")
+                   (form/submit-button "Submit"))))
 
 (defroutes app-routes
   (GET "/" [] "HelloName")
   (GET "/hello2" [] (page/html5 [:div "Hello from " [:b "hiccup"] "!"]))
+  (GET "/who" [] (who))
+  (POST "/iam" {params :params} (iam params))
   (route/resources "/")
   (route/not-found "Not Found"))
 
