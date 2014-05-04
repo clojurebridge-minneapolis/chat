@@ -7,14 +7,16 @@
 
 (defn iam [params]
   (page/html5
-     [:div "You are " (:name params) "!"
+     (let [name (:name params)]
+     [:div "You are " name "!"
       [:ul
        [:li "Your name is "
-        (if (odd? (count (:name params)))
+        (if (odd? (count name))
           "Odd"
           "Even")]
-        (if (> (count (:name params)) 7)
-            [:li "You should consider a nickname."])]]))
+        (when (> (count name) 7)
+            [:li "You should consider a nickname."])]]
+       )))
 
 ; this is a function
 (defn who []
@@ -25,7 +27,7 @@
                    (form/submit-button "Submit"))))
 
 (defroutes app-routes
-  (GET "/" [] "HelloName")
+  (GET "/" [] (who))
   (GET "/hello2" [] (page/html5 [:div "Hello from " [:b "hiccup"] "!"]))
   (GET "/who" [] (who))
   (POST "/iam" {params :params} (iam params))
