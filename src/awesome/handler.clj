@@ -5,12 +5,17 @@
             [hiccup.page :as page]
             [hiccup.form :as form]))
 
+(def messages (atom []))
+
 (defn chat [name msg]
+  (when-not (empty? msg)
+    (swap! messages conj [name msg]))
   (page/html5
-   ;(map (fn [message] [:div [:strong (first message)] " " (second message)]) @messages)
+   (map (fn [message] [:div [:strong (first message)] " " (second message)]) @messages)
+   ;(str @messages)
    (form/form-to
     [:post "/"]
-    [:div "Name:" (form/text-field "name" name) " Message:" (form/text-field "msg" msg)]
+    [:div "Name:" (form/text-field "name" name) " Message:" (form/text-field "msg")]
     (form/submit-button "Submit"))))
 
 (defn iam [params]
