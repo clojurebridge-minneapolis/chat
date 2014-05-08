@@ -18,7 +18,8 @@
     (boot/include-bootstrap)]
    [:body
      [:h1 "Chat"]
-     (map (fn [message] [:div [:strong (first message)] " " (second message)]) @messages)
+     [:div.well
+     (map (fn [message] [:div [:strong (first message)] " " (second message)]) @messages)]
      (form/form-to
       [:post "/"]
       [:div "Name:" (form/text-field "name" name) " Message:" (form/text-field "msg")]
