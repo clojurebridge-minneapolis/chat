@@ -56,8 +56,10 @@
   (route/resources "/")
   (route/not-found "Not Found"))
 
+; lein ring server
 (def app
   (handler/site (wrap-bootstrap-resources app-routes)))
 
+; lein run -m awesome.hanlder 3000
 (defn -main [port]
-  (run-jetty (handler/site app-routes) {:port (read-string port) :join? false}))
+  (run-jetty (handler/site (wrap-bootstrap-resources app-routes)) {:port (read-string port) :join? false}))
