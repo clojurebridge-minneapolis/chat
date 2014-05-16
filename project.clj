@@ -5,9 +5,13 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [compojure "1.1.6"]
                  [javax.servlet/servlet-api "2.5"]
+                 [ring/ring-servlet "1.2.0-RC1"]
+                 [lib-noir "0.7.9"]
                  [hiccup "1.0.5"]
                  [hiccup-bootstrap "0.1.2"]]
   :plugins [[lein-ring "0.8.10"]]
+  :uberjar-name "chat.jar"
+  :min-lein-version "2.0.0"
   :ring {:handler awesome.handler/app}
   :profiles
-  {:dev {:dependencies [[ring-mock "0.1.5"]]}})
+  {:dev {:dependencies [[ring-mock "0.1.5"] [javax.servlet/servlet-api "2.5"]]}})

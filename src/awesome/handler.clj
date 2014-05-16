@@ -1,6 +1,7 @@
 (ns awesome.handler
   (:use [compojure.core]
-         [hiccup.bootstrap.middleware])
+         [hiccup.bootstrap.middleware]
+         [ring.adapter.jetty :as ring])
   (:require [compojure.handler :as handler]
             [compojure.route :as route]
             [hiccup.page :as page]
@@ -57,3 +58,6 @@
 
 (def app
   (handler/site (wrap-bootstrap-resources app-routes)))
+
+(defn -main [port]
+  (run-jetty (handler/site app-routes) {:port (read-string port) :join? false}))
